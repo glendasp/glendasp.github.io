@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo List</title>
+
+    <!--
+     Got help from:
+     http://www.w3schools.com/css/css3_buttons.asp
+     http://codereview.stackexchange.com/
+
+
+     The items that are in the list are not done and the ones that are not in
+     the list anymore are done.
+
+
+     -->
+
+    <style>
+        button {
+            background-color: lightgray;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            display: inline-block;
+            font-size: 18px;
+        }
+
+
+        /* Text box*/
+        #newItem{
+            background: white;
+            font-size: large;
+            border: groove;
+        }
+
+
+        #toggleAll {
+            position: relative;
+            top: 0px;
+            left: 0px;
+            width: 40px;
+            height: 20px;
+        }
+
+        /*Remove bullet point*/
+        #todoList {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        /* make line*/
+        #todoList li {
+            position: relative;
+            font-size: 24px;
+            border-bottom: 1px solid lightgrey;
+        }
+
+        #todoList li .toggle {
+            text-align: center;
+            width: 40px;
+            height: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            appearance: none;
+        }
+
+        #todoList li span {
+            white-space: pre;
+            padding: 15px 60px 15px 15px;
+            color: black;
+            margin-left: 45px;
+            display: block;
+            line-height: 1.2;
+        }
+
+        #todoList li .destroy {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 10px;
+            bottom: 0;
+            width: 40px;
+            height: 40px;
+            margin: auto 0;
+            font-size: 30px;
+            color: #cc9a9a;
+            margin-bottom: 11px;
+        }
+
+        /*Removes bottom from table*/
+        #ItemsCompletedNDate tr .destroy {
+            display: none;
+        }
+
+        /*Animation for todo list: Add line when item in clicked*/
+        #todoList:checked li{
+            text-decoration: line-through;
+            position: relative;
+            font-size: 24px;
+            border-bottom: red;
+        }
+
+        #todoList li{
+            text-decoration: none;
+
+        }
+
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+    <script>
+
+        //function to add items to the list
+        function addListItem()
+        {
+            var text = $('#newItem').val();
+            //Creates list in the html
+            $("#todoList").append('<li ><input type="checkbox" class="toggle"/ ><span class="text">'
+                    + text + ' </span><button class="destroy"></button></li>');
+            $("#newItem").val('');
+        }
+
+
+        //Function to for the completed items (add as completed and remove completed)
+        function completed() {
+            var $item = $(this).parent();
+            if ( $item.toggleClass('completed').css('textDecoration') == 'line-through') {
+                $item.addClass('completed')('opacity', '1');
+            } else {
+                $item.removeClass('completed').css('textDecoration', 'line-through');
+            }
+        }
+
+
+        //
+        $(document).ready(function(){
+            //When enter key is presed, new item will be added to the list
+            $('#newItem').keyup(function(e)
+            {
+                if (e.keyCode === 13)
+                {
+                    addListItem();
+                }
+            }); //ends here
+
+            $(document).on('click', '.toggle', completed);
+
+
+
+            //Got help with Lerry for this part
+            $("document").ready(function () {
+                $("#clearcompleted").click(function () {
+                    var todayDate = new Date().toLocaleDateString();
+                    var checkedItemCompleted = $("#todoList .toggle:checked").parent().remove();
+                    checkedItemCompleted.each(function () {
+                        var checkedItem = $(this).html();
+                        $("#ItemsCompletedNDate").append(
+                                "<tr><td>" + checkedItem +"</td><td>" + todayDate + "</td> </tr>"
+                        //I could't get away with the dropbox that is still showing with the completed items
+                        //
+                        );
+                    });
+                });
+                checkedItemCompleted.remove();
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div>
+    <h1>
+        Glenda's To Do List
+    </h1>
+    <p> -Enter your item and press enter to add it to your <strong>"To do list"</strong></p>
+    <div>
+        <input type="text" id="newItem" placeholder="Type here..."/>
+        <ul id="todoList">
+            <!--New itens go here -->
+        </ul>
+        <br>
+        <input type="checkbox" id="toggleAll"/>
+        <br>
+        <br>
+        <button type="checkbox" id="clearcompleted">Clear completed</button>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <h3> All Items completed</h3>
+        <br>
+        <table id="ItemsCompletedNDate">
+            <tr>
+                <th>Completed Itens |</th>
+                <th> _Date </th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<p> - Still have few things to work on </p>
+
+</body>
+</html>

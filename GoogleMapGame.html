@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>First Page with a Google Map</title>
+
+    <!--From the Google maps developer documentation
+    https://developers.google.com/maps/tutorials/fundamentals/adding-a-google-map-->
+
+    <!-- <link rel="stylesheet" type="text/css" href="mapstyle.css"> -->
+
+    <style>
+        #map {
+            width:500px;
+            height:400px
+        }
+
+        button{
+            background-color: #DA4F49;
+            border-color: rgba(0,0,0,0.5);
+        }
+    </style>
+
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+
+    <script>
+        function initalize() {
+
+            //Got this example from https://developers.google.com/maps/documentation/javascript/examples/maptype-styled-simple
+            var customMapType = new google.maps.StyledMapType([
+                {
+                    stylers: [
+                        //{hue: '#890000'},
+                        {visibility: 'simplified'},
+                        {gamma: 0.5},
+                        {weight: 0.5}
+                    ]
+                },
+                {
+                    elementType: 'labels',
+                    stylers: [{visibility: 'off'}]
+                },
+                {
+                    featureType: 'water',
+                    //stylers: [{color: '#890000'}]
+                }
+            ], {
+                name: 'Custom Style'
+            });
+
+            var customMapTypeId = 'custom_style';
+
+
+            //For this part on I used Clara's exampler from week 4 hello-google-maps
+
+            //The mapCanvas is the HTML element that will hold the map
+            var mapCanvas = document.getElementById("map");
+
+            //Set three required options to display the map
+            //Other options such as preventing scrolling or zooming, are available
+            var mapOptions = {
+                center : new google.maps.LatLng(47, -93),   // Lat and long to center the map
+                zoom : 5,                                   // 0 = the whole world, 22 = max zoom
+                //mapTypeId : google.maps.MapTypeId.ROADMAP   //or SATELLITE, HYBRID or TERRAIN
+
+                mapTypeControlOptions: {
+                    mapTypeIds: [customMapTypeId]//, google.maps.MapTypeId.SATELLITE]
+                }
+
+            };
+
+
+            //And create the map, with the options specified
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+            map.mapTypes.set(customMapTypeId, customMapType);//idea from https://developers.google.com/maps/documentation/javascript/examples/maptype-styled-simple
+            map.setMapTypeId(customMapTypeId);               //
+
+            //Can add features, points of interest, routes, lines etc. to maps
+            //Adding a marker to the map
+            //Like the map, set the options for the marker
+
+            var minneapolis = {
+                position : new google.maps.LatLng(44.97, -93.26), //Where?
+                map : map,                       //What map?
+                draggable : false,               //No moving the marker!
+                title : "Minneapolis is here",    //Tooltip/rollover text
+            };
+
+            //var msp = new City("Minneapolis", 44.972583, -93.283667);
+
+            var stCloud = {
+                position : new google.maps.LatLng(45.55, -94.16), //Where?
+                map : map,                       //What map?
+                draggable : false,               //No moving the marker!
+                title : "This is St Cloud",    //Tooltip/rollover text
+            };
+
+            var princeton = {
+                position : new google.maps.LatLng(45.56, -93.59), //Where?
+                map : map,                       //What map?
+                draggable : false,               //No moving the marker!
+                title : "This is Princeton",    //Tooltip/rollover text
+            };
+
+            //Create the marker, with the options above
+            //A new marker with the map option set is automatically added to
+            //the map it belongs to.
+            var mplsMarker = new google.maps.Marker(minneapolis);
+            var stcloudMarker = new google.maps.Marker(stCloud);
+            var princetonMarker = new google.maps.Marker(princeton);
+
+
+            var mplsowindow = new google.maps.InfoWindow ( {
+                content : "Minneapolis is right here"
+            });
+
+            mplsMarker.addListener("click", function() {
+                mplsowindow.open(map, mplsMarker);
+            });
+
+            var stcloudowindow = new google.maps.InfoWindow ( {
+                content : "Wrong!! This is St. Cloud"
+            });
+
+            stcloudMarker.addListener("click", function() {
+                stcloudowindow.open(map, stcloudMarker);
+            });
+
+            var princetonowindow = new google.maps.InfoWindow ( {
+                content : "Wrong!! This is Princeton"
+            });
+
+            princetonMarker.addListener("click", function() {
+                princetonowindow.open(map, princetonMarker);
+            });
+        }
+
+        //I decided to create another function for the next game to be called
+        // by a button
+        function roud2(){
+
+            //Got this example from https://developers.google.com/maps/documentation/javascript/examples/maptype-styled-simple
+            var customMapType = new google.maps.StyledMapType([
+                {
+                    stylers: [
+                        //{hue: '#890000'},
+                        {visibility: 'simplified'},
+                        {gamma: 0.5},
+                        {weight: 0.5}
+                    ]
+                },
+                {
+                    elementType: 'labels',
+                    stylers: [{visibility: 'off'}]
+                },
+                {
+                    featureType: 'water',
+                    //stylers: [{color: '#890000'}]
+                }
+            ], {
+                name: 'Custom Style'
+            });
+
+            var customMapTypeId = 'custom_style';
+
+
+            //For this part on I used Clara's exampler from week 4 hello-google-maps
+
+            //The mapCanvas is the HTML element that will hold the map
+            var mapCanvas = document.getElementById("map");
+
+            //Set three required options to display the map
+            //Other options such as preventing scrolling or zooming, are available
+            var mapOptions = {
+                center : new google.maps.LatLng(-15, -50),   // Lat and long to center the map
+                zoom : 3,                                   // 0 = the whole world, 22 = max zoom
+                //mapTypeId : google.maps.MapTypeId.ROADMAP   //or SATELLITE, HYBRID or TERRAIN
+
+                mapTypeControlOptions: {
+                    mapTypeIds: [customMapTypeId]//, google.maps.MapTypeId.SATELLITE]
+                }
+
+            };
+
+
+            //And create the map, with the options specified
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+            map.mapTypes.set(customMapTypeId, customMapType);//idea from https://developers.google.com/maps/documentation/javascript/examples/maptype-styled-simple
+            map.setMapTypeId(customMapTypeId);               //
+
+            //Can add features, points of interest, routes, lines etc. to maps
+            //Adding a marker to the map
+            //Like the map, set the options for the marker
+
+            var riodejaneiro = {
+                position : new google.maps.LatLng(-22.90, -43.17), //Where?
+                map : map,                       //What map?
+                draggable : false,               //No moving the marker!
+                title : "Rio de Janeiro is here",    //Tooltip/rollover text
+            };
+
+            //var msp = new City("Minneapolis", 44.972583, -93.283667);
+
+            var brasilia = {
+                position : new google.maps.LatLng(-15.79, -47.88), //Where?
+                map : map,                       //What map?
+                draggable : false,               //No moving the marker!
+                title : "This is St Brasília",    //Tooltip/rollover text
+            };
+
+            var saopaulo = {
+                position : new google.maps.LatLng(-23.55, -46.63), //Where?
+                map : map,                       //What map?
+                draggable : false,               //No moving the marker!
+                title : "This is São Paulo",    //Tooltip/rollover text
+            };
+
+            //Create the marker, with the options above
+            //A new marker with the map option set is automatically added to
+            //the map it belongs to.
+            var rioMarker = new google.maps.Marker(riodejaneiro);
+            var brasiliaMarker = new google.maps.Marker(brasilia);
+            var saopauloMarker = new google.maps.Marker(saopaulo);
+
+
+            var rioowindow = new google.maps.InfoWindow ( {
+                content : "Correct! Rio de Janeiro is right here!"
+            });
+
+            rioMarker.addListener("click", function() {
+                rioowindow.open(map, rioMarker);
+            });
+
+            var brasiliaowindow = new google.maps.InfoWindow ( {
+                content : "Wrong!! This is Brasília"
+            });
+
+            brasiliaMarker.addListener("click", function() {
+                brasiliaowindow.open(map, brasiliaMarker);
+            });
+
+            var saopaulowindow = new google.maps.InfoWindow ( {
+                content : "Wrong!! This is São Paulo"
+            });
+
+            saopauloMarker.addListener("click", function() {
+                saopaulowindow.open(map, saopauloMarker);
+            });
+
+        }
+
+        //Load map by calling initalize() method; once page has loaded.
+        google.maps.event.addDomListener(window, "load", initalize, roud2);
+
+
+    </script>
+
+</head>
+<body>
+
+<h3>Can you find _____?</h3>
+<p> Game one: Can you find Minneapolis?</p>
+<p> Game two: Can you find Rio de Janeiro?</p>
+<div id="map"></div>
+
+<button id="secondgame" onclick="roud2()"> Next game </button>
+
+<P>The <a href="https://developers.google.com/maps/documentation/javascript/reference">Google Maps API reference was very helpful.</a></P>
+</body>
+</html>
